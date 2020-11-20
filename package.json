@@ -9,11 +9,16 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "firebase": "^7.17.2",
+    "mic-recorder-to-mp3": "^2.2.2",
+    "node-fetch": "^2.6.1",
     "react": "^16.13.1",
+    "react-audio-recorder": "^2.2.0",
     "react-dom": "^16.13.1",
     "react-flip-move": "^3.0.4",
+    "react-mic": "^12.4.6",
     "react-scripts": "3.4.1",
-    "react-twitter-embed": "^3.0.3"
+    "react-twitter-embed": "^3.0.3",
+    "react-voice-recorder": "^2.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
