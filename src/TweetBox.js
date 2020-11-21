@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import "./TweetBox.css";
 import { Avatar, Button } from "@material-ui/core";
 //import db from "./firebase";
@@ -12,10 +12,11 @@ import MicRecorder from 'mic-recorder-to-mp3';
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 
 const fetch = require('node-fetch');
-
+var useData = '';
 
 
 function TweetBox() {
+  const textTweet = useRef(null);
   const [tweetMessage, setTweetMessage] = useState("");
   const [tweetImage, setTweetImage] = useState("");
   const [Recording, setRecording] = useState(false);
@@ -23,6 +24,7 @@ function TweetBox() {
   const [blobobj, setblobobj] = useState('');
   const [blocked, setblocked] = useState(false);
   const [sendD, setsendD] = useState(true);
+  const [tweet, settweet] = useState("");
 
 
 
@@ -117,6 +119,21 @@ function TweetBox() {
       method: "POST",
       body: fd
     })
+      .then(res => res.json())
+      .then(data => {
+        useData = data
+        console.log(data)
+      })
+      .then(() => {
+        document.getElementById('tweetthis').innerHTML = useData.data
+        settweet(useData.data);
+        console.log('Data to further process is ', useData.data)
+      })
+
+
+
+
+
     /* axios({
       url:'http://localhost:3001/tweet/speechtotext',
       method:'post',
@@ -161,7 +178,7 @@ function TweetBox() {
   return (
     <div className="tweetBox">
       <form>
-        <div className="tweetBox__input">
+        <div className="tweetBox__input" >
           <Avatar src="https://kajabi-storefronts-production.global.ssl.fastly.net/kajabi-storefronts-production/themes/284832/settings_images/rLlCifhXRJiT0RoN2FjK_Logo_roundbackground_black.png" />
           <input
             onChange={(e) => setTweetMessage(e.target.value)}
@@ -171,8 +188,9 @@ function TweetBox() {
           />
         </div>
         <input
-          value={tweetImage}
-          onChange={(e) => setTweetImage(e.target.value)}
+          id='tweetthis'
+          value={tweet}
+          //onChange={(e) => setTweetImage(e.target.value)}
           className="tweetBox__imageInput"
           placeholder="Optional: Enter image URL"
           type="text"
