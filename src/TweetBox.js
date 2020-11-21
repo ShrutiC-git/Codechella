@@ -8,6 +8,7 @@ import { Recorder } from 'react-voice-recorder';
 import 'react-voice-recorder/dist/index.css'
 import MicRecorder from 'mic-recorder-to-mp3';
 
+
 const Mp3Recorder = new MicRecorder({ bitRate: 128 });
 
 const fetch = require('node-fetch');
@@ -24,6 +25,7 @@ function TweetBox() {
   const [sendD, setsendD] = useState(true);
 
 
+
   navigator.getUserMedia({ audio: true }, () => {
     console.log('Permission Granted');
     setblocked(false)
@@ -32,33 +34,34 @@ function TweetBox() {
     setblocked(true)
   })
 
-  const sendTweet = (e) => {
-    e.preventDefault();
-    const data = JSON.stringify({ text: tweetMessage })
-    fetch('http://localhost:3001/tweet', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: data
-    })
-    /*  .then(res => res.json())
-     .then(json => console.log(json)) */
+  /*   const sendTweet = (e) => {
+      e.preventDefault();
+      const data = JSON.stringify({ text: tweetMessage })
+      fetch('http://localhost:3001/tweet', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: data
+      })
+    }; */
+  /*  .then(res => res.json())
+   .then(json => console.log(json)) */
 
-    /*       db.collection("posts").add({
-           displayName: "Rafeh Qazi",
-           username: "cleverqazi",
-           verified: true,
-           text: tweetMessage,
-           image: tweetImage,
-           avatar:
-             "https://kajabi-storefronts-production.global.ssl.fastly.net/kajabi-storefronts-production/themes/284832/settings_images/rLlCifhXRJiT0RoN2FjK_Logo_roundbackground_black.png",
-         });  */
+  /*       db.collection("posts").add({
+         displayName: "Rafeh Qazi",
+         username: "cleverqazi",
+         verified: true,
+         text: tweetMessage,
+         image: tweetImage,
+         avatar:
+           "https://kajabi-storefronts-production.global.ssl.fastly.net/kajabi-storefronts-production/themes/284832/settings_images/rLlCifhXRJiT0RoN2FjK_Logo_roundbackground_black.png",
+       });  */
 
-    /*   setTweetMessage(""
-      );
-      setTweetImage(""); */
-  };
+  /*   setTweetMessage(""
+    );
+    setTweetImage(""); */
+
 
   /*   function onData(recordedBlob) {
       console.log('chunk of real-time data is: ', recordedBlob);
@@ -92,12 +95,13 @@ function TweetBox() {
       .stop()
       .getMp3()
       .then(([buffer, blob]) => {
-        const blobobj = blob;
-        setblobobj(blobobj);
-        setsendD(false);
+
         const blobURL = URL.createObjectURL(blob)
         setblobURL(blobURL);
         setRecording(false);
+        const blobobj = blob;
+        setblobobj(blobobj);
+        setsendD(false);
         console.log(blobURL);
         console.log(blobobj);
       }).catch((e) => console.log(e));
@@ -105,14 +109,52 @@ function TweetBox() {
   }
 
   function send() {
+
+    var fd = new FormData();
+    fd.append('audio_file.mp3', blobobj);
     fetch('http://localhost:3001/tweet/speechtotext', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ recording: blobURL })
+      headers: { Accept: "application/x-www-form-urlencoded" },
+      method: "POST",
+      body: fd
     })
-    console.log('Request sent successfully')
+    /* axios({
+      url:'http://localhost:3001/tweet/speechtotext',
+      method:'post',
+      data:{
+        fd,
+        name: 'test-audio'
+      }
+    }) */
+    /* var fd = new FormData();
+    fd.append('fname','test.wav');
+    fd.append('data',blobobj);
+    fetch('http://localhost:3001/tweet/speechtotext',{
+      method:'POST',
+      body:fd,
+      headers: new Headers({ 'content-type': 'multipart/formdata' }),
+
+      
+    }) */
+    /*     const formData = new FormData();
+        formData.append('audio-file', blobfile); 
+        var fileBlob = new File([blobobj],'audio.mp3')
+    
+        fetch('http://localhost:3001/tweet/speechtotext', {
+          method: 'POST',
+          data: formData
+        }) */
+    /*     const fd = new FormData()
+        fd.append('audio-file', blobURL);
+        console.log(blobobj)
+        fetch('http://localhost:3001/tweet/speechtotext', {
+          method: 'POST',
+          responseType: 'blob',
+          headers: new Headers({ 'content-type': 'application/json' }),
+          body: JSON.stringify({ sendblob: blobURL, senddata: fd })
+          
+        }) */
+
+
   }
 
 
@@ -136,13 +178,13 @@ function TweetBox() {
           type="text"
         />
 
-        <Button
+        {/*   <Button
           onClick={sendTweet}
           type="submit"
           className="tweetBox__tweetButton"
         >
           Tweet
-        </Button>
+        </Button> */}
         {/*         <ReactMic
           record={record}
           className="sound-wave"
@@ -164,6 +206,7 @@ function TweetBox() {
         />
         */}
       </form>
+
       <div>
         <button onClick={start} disabled={Recording}>
           Record
