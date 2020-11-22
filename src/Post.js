@@ -38,7 +38,7 @@ const Post = forwardRef(
             <RepeatIcon fontSize="small" />
             <FavoriteBorderIcon fontSize="small" />
             <Button onClick={async () => {
-              let res = await fetch(`http://localhost:8080/text-to-speech?text=${text}`, { method: "GET"});
+              let res = await fetch(`http://localhost:3001/text-to-speech?text=${text}`, { method: "GET"});
               var reader = res.body.getReader();
               reader.read()
               .then((response) => {

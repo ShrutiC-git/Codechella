@@ -25,7 +25,6 @@ function TweetBox() {
   const [sendD, setsendD] = useState(true);
 
 
-
   navigator.getUserMedia({ audio: true }, () => {
     console.log('Permission Granted');
     setblocked(false)
@@ -34,17 +33,21 @@ function TweetBox() {
     setblocked(true)
   })
 
-  /*   const sendTweet = (e) => {
+     const sendTweet = (e) => {
       e.preventDefault();
       const data = JSON.stringify({ text: tweetMessage })
-      fetch('http://localhost:3001/tweet', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: data
-      })
-    }; */
+      window.$posts.push(
+        {key:1,
+         displayName:"Richard Falcon",
+         username:"UniquePotato",
+         verified:true,
+         text:tweetMessage,
+         avatar:"https://cdn.searchenginejournal.com/wp-content/uploads/2019/07/the-essential-guide-to-using-images-legally-online.png",
+         image:""}
+      )
+      // window.location.reload(false);
+      console.log(window.$posts);
+    };
   /*  .then(res => res.json())
    .then(json => console.log(json)) */
 
@@ -66,7 +69,7 @@ function TweetBox() {
   /*   function onData(recordedBlob) {
       console.log('chunk of real-time data is: ', recordedBlob);
     }
-  
+
     function onStop(recordedBlob) {
       Recording = recordedBlob
       console.log('The recorded blob is: ', recordedBlob)
@@ -117,6 +120,11 @@ function TweetBox() {
       method: "POST",
       body: fd
     })
+    .then((res)=>{
+      return res.text();
+    }).then(function(data) {
+        setTweetMessage(data);
+     });
     /* axios({
       url:'http://localhost:3001/tweet/speechtotext',
       method:'post',
@@ -133,12 +141,12 @@ function TweetBox() {
       body:fd,
       headers: new Headers({ 'content-type': 'multipart/formdata' }),
 
-      
+
     }) */
     /*     const formData = new FormData();
-        formData.append('audio-file', blobfile); 
+        formData.append('audio-file', blobfile);
         var fileBlob = new File([blobobj],'audio.mp3')
-    
+
         fetch('http://localhost:3001/tweet/speechtotext', {
           method: 'POST',
           data: formData
@@ -151,7 +159,7 @@ function TweetBox() {
           responseType: 'blob',
           headers: new Headers({ 'content-type': 'application/json' }),
           body: JSON.stringify({ sendblob: blobURL, senddata: fd })
-          
+
         }) */
 
 
@@ -170,21 +178,13 @@ function TweetBox() {
             type="text"
           />
         </div>
-        <input
-          value={tweetImage}
-          onChange={(e) => setTweetImage(e.target.value)}
-          className="tweetBox__imageInput"
-          placeholder="Optional: Enter image URL"
-          type="text"
-        />
-
-        {/*   <Button
+        {   <Button
           onClick={sendTweet}
           type="submit"
           className="tweetBox__tweetButton"
         >
           Tweet
-        </Button> */}
+        </Button> }
         {/*         <ReactMic
           record={record}
           className="sound-wave"
@@ -202,7 +202,7 @@ function TweetBox() {
           showUIAudio
           handleAudioStop={data => this.handleAudioStop(data)}
           handleAudioUpload={data => this.handleAudioUpload(data)}
-          handleRest={() => this.handleRest()}  
+          handleRest={() => this.handleRest()}
         />
         */}
       </form>
