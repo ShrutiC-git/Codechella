@@ -36,6 +36,22 @@ function TweetBox() {
     setblocked(true)
   })
 
+  function sendTweet() {
+    console.log('send tweet')
+  }
+
+  const sendSuggestion = (e) => {
+    e.preventDefault()
+    console.log('send suggestions')
+    console.log(tweet)
+    fetch('http://localhost:3001/tweet/tweetanalysis', {
+      headers: { Accept: "application/json" },
+      method: "POST",
+      body: JSON.stringify({ "SendTweet": tweet }),
+
+    })
+  }
+
   /*   const sendTweet = (e) => {
       e.preventDefault();
       const data = JSON.stringify({ text: tweetMessage })
@@ -178,7 +194,9 @@ function TweetBox() {
         <div className="tweetBox__input" >
           <Avatar src="https://kajabi-storefronts-production.global.ssl.fastly.net/kajabi-storefronts-production/themes/284832/settings_images/rLlCifhXRJiT0RoN2FjK_Logo_roundbackground_black.png" />
           <input
-            onChange={(e) => setTweetMessage(e.target.value)}
+            onChange={(e) => {
+              setTweetMessage(e.target.value)
+            }}
             value={tweetMessage}
             placeholder="What's happening?"
             type="text"
@@ -193,33 +211,20 @@ function TweetBox() {
           type="text"
         />
 
-        {/*   <Button
+        {<Button
           onClick={sendTweet}
           type="submit"
           className="tweetBox__tweetButton"
         >
           Tweet
-        </Button> */}
-        {/*         <ReactMic
-          record={record}
-          className="sound-wave"
-          onStop={onStop}
-          onData={onData}
-          mimeType='audio/webm'
-          strokeColor="#000000"
-          backgroundColor="#FF4081" /> */}
-        {/* <button onClick={() => setRecording(true)} type="button">Start</button>
-        <button onClick={() => setRecording(false)} type="button">Stop</button> */}
-        {/* <Recorder
-          record={true}
-          title={"New recording"}
-          audioURL={this.state.audioDetails.url}
-          showUIAudio
-          handleAudioStop={data => this.handleAudioStop(data)}
-          handleAudioUpload={data => this.handleAudioUpload(data)}
-          handleRest={() => this.handleRest()}  
-        />
-        */}
+        </Button>}
+        {<Button
+          onClick={sendSuggestion}
+          type="submit"
+          className="tweetBox__tweetButton"
+        >
+          '#' Help
+        </Button>}
       </form>
 
       <div>
@@ -237,6 +242,10 @@ function TweetBox() {
 </button>
 
       </div>
+      <div>
+        <h4>Testing</h4>
+      </div>
+
     </div>
   );
 }
